@@ -8,7 +8,6 @@ const lookInSession = (key) => {
 
 const removeFromSession = (key) => {
   return sessionStorage.removeItem(key);
-  s;
 };
 
 const logOutUser = () => {

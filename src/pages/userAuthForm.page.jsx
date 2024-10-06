@@ -1,12 +1,13 @@
 import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
 import googleIcon from "../imgs/google.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useContext, useRef } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import axios from "axios";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";
+import { authWithGoogle } from "../common/firebase";
 
 const UserAuthForm = ({ type }) => {
   let {
@@ -57,18 +58,34 @@ const UserAuthForm = ({ type }) => {
       return toast.error("error: invalid email");
     }
     if (!passwordRegex.test(password)) {
-      return res
-        .status(403)
-        .json(
-          "error: password should be at least 6 to 20  characters long with a numeric, 1 lower and 1 uppercase letter"
-        );
+      return toast.error(
+        "error: password should be at least 6 to 20  characters long with a numeric, 1 lower and 1 uppercase letter"
+      );
     }
 
     userAuthThroughServer(serverRoute, formData);
   };
 
+  const handleGoogleAuth = (e) => {
+    e.preventDefault();
+    authWithGoogle()
+      .then((user) => {
+        let serverRoute = "/google-auth";
+
+        let formatData = {
+          access_token: user.accessToken,
+        };
+
+        userAuthThroughServer(serverRoute, formatData);
+      })
+      .catch((error) => {
+        toast.error("trouble login through google");
+        return console.log(error);
+      });
+  };
+
   return access_token ? (
-    <Navigation to="/" />
+    <Navigate to="/" />
   ) : (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
@@ -116,7 +133,10 @@ const UserAuthForm = ({ type }) => {
             <p>or</p>
             <hr className="w-1/2 border-black" />
           </div>
-          <button className="btn-dark flex items-center justify-center gap-4 w-[90] center">
+          <button
+            className="btn-dark flex items-center justify-center gap-4 w-[90] center"
+            onClick={handleGoogleAuth}
+          >
             <img
               src={googleIcon}
               alt="Button conitnue with google"

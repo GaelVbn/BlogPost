@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
 import { UserContext } from "../App";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { removeFromSession } from "../common/session";
 
 const UserNavigationPanel = () => {
-  const { userAuth, setUserAuth } = useContext(UserContext);
-  const username = userAuth?.username || "Guest"; // Utilise une valeur par défaut si `username` est absent
+  const {
+    userAuth: { username },
+    setUserAuth,
+  } = useContext(UserContext);
 
   const signOutUser = () => {
+    console.log("signout");
     removeFromSession("user");
     setUserAuth({ access_token: null });
   };
@@ -37,7 +40,10 @@ const UserNavigationPanel = () => {
 
         <button
           className="text-left p-4 hover:bg-grey w-full pl-8 py-4"
-          onClick={signOutUser}
+          onClick={() => {
+            console.log("Button clicked");
+            signOutUser();
+          }}
         >
           <h1 className="font-bold text-xl mg-1">Sign Out</h1>
           <p className="text-dark-grey">@{username}</p>

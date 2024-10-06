@@ -13,13 +13,13 @@ const Navbar = () => {
   const profile_img = userAuth?.profile_img;
 
   const handleUserNavPanel = () => {
-    setTimeout(() => {
-      setUserNavPanel((currentValue) => !currentValue);
-    }, 200);
+    setUserNavPanel((currentValue) => !currentValue);
   };
 
   const handleBlur = () => {
-    setUserNavPanel(false);
+    setTimeout(() => {
+      setUserNavPanel(false);
+    }, 200);
   };
 
   return (
