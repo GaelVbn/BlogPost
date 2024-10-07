@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../App";
 import { Navigate } from "react-router-dom";
 import BlogEditor from "../components/blog-editor.component";
-import PublishEditor from "../components/publish-form.component";
+import PublishForm from "../components/publish-form.component";
 import { createContext } from "react";
 
 const blogStructure = {
@@ -40,7 +40,7 @@ const Editor = () => {
       ) : editorState == "editor" ? (
         <BlogEditor />
       ) : (
-        <PublishEditor />
+        <PublishForm />
       )}
     </EditorContext.Provider>
   );
