@@ -13,8 +13,6 @@ const BlogPostCard = ({ content, author }) => {
   } = content;
   let { fullname, profile_img, username } = author;
 
-  console.log(des);
-
   return (
     <Link
       to={`/blog/${id}`}
