@@ -12,7 +12,7 @@ const CommentField = ({ action }) => {
       comments,
       comments: { results: commentsArr },
       activity,
-      activity: { total_comments, total_parent_comment },
+      activity: { total_comments, total_parent_comments },
     },
     setBlog,
     setTotalParentCommentsLoaded,
@@ -68,8 +68,8 @@ const CommentField = ({ action }) => {
           activity: {
             ...activity,
             total_comments: total_comments + 1,
-            total_parent_comment:
-              total_parent_comment + parentCommentIncrementVal,
+            total_parent_comments:
+              total_parent_comments + parentCommentIncrementVal,
           },
         });
         setTotalParentCommentsLoaded(
