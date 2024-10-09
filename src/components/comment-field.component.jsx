@@ -3,7 +3,12 @@ import { UserContext } from "../App";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { BlogContext } from "../pages/blog-page";
-const CommentField = ({ action }) => {
+const CommentField = ({
+  action,
+  index = undefined,
+  replyingTo = undefined,
+  setReplying,
+}) => {
   let {
     blog,
     blog: {
@@ -41,6 +46,7 @@ const CommentField = ({ action }) => {
           _id,
           blog_author,
           comment,
+          replying_to: replyingTo,
         },
         {
           headers: {
@@ -56,11 +62,25 @@ const CommentField = ({ action }) => {
 
         let newCommentArr;
 
-        data.childrenLevel = 0;
+        if (replyingTo) {
+          commentsArr[index].children.push(data._id);
+          data.childrenLevel = commentsArr[index].childrenLevel + 1;
+          data.parentIndex = index;
 
-        newCommentArr = [data, ...commentsArr];
+          commentsArr[index].isReplyLoaded = true;
 
-        let parentCommentIncrementVal = 1;
+          commentsArr.splice(index + 1, 0, data);
+
+          newCommentArr = commentsArr;
+
+          setReplying(false);
+        } else {
+          data.childrenLevel = 0;
+
+          newCommentArr = [data, ...commentsArr];
+        }
+
+        let parentCommentIncrementVal = replyingTo ? 0 : 1;
 
         setBlog({
           ...blog,
