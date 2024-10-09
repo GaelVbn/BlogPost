@@ -21,6 +21,8 @@ const BlogEditor = () => {
     setEditorState,
   } = useContext(EditorContext);
 
+  console.log(title);
+
   let {
     userAuth: { access_token },
   } = useContext(UserContext);
