@@ -4,12 +4,14 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import { EditorContext } from "../pages/editor.page";
 import Tag from "./tags.component";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const PublishForm = () => {
   let characterLimit = 200;
   let tagLimit = 10;
+
+  let { blog_id } = useParams();
 
   let {
     blog,
@@ -91,11 +93,15 @@ const PublishForm = () => {
     };
 
     axios
-      .post(import.meta.env.VITE_SERVER_DOMAIN + "/create-blog", blogObj, {
-        headers: {
-          Authorization: `Baerer ${access_token}`,
-        },
-      })
+      .post(
+        import.meta.env.VITE_SERVER_DOMAIN + "/create-blog",
+        { ...blogObj, id: blog_id },
+        {
+          headers: {
+            Authorization: `Baerer ${access_token}`,
+          },
+        }
+      )
       .then(() => {
         e.target.classList.remove("disable");
 
